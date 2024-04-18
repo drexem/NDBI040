@@ -1,25 +1,44 @@
 # ArangoDB
 
+
 Create an instance of arangoDB container:
+**Port `8529` must be available!**
 ```bash
 docker run -e ARANGO_NO_AUTH=1 -d --name arangodb-instance -p 8529:8529 arangodb/arangodb arangod --server.endpoint tcp://0.0.0.0:8529\
 ```
 
+
+Run the transformation scripts using `Python`:
 ```bash
-docker cp pokus arangodb-instance:/pokus
+python transform.py Data/Raw/Original ApplicationData/Data/Transformed/Original 
+```
+Or smaller variant:
+```bash
+python transform.py Data/Raw/Smaller Application/Data/Transformed/Smaller 
 ```
 
+Copy necessary files into the docker container:
 ```bash
-python transform.py pokus pokus 
+docker cp Application arangodb-instance:/Application
 ```
 
+Enter the bash inside the docker container:
 ```bash
 docker exec -it arangodb-instance sh
 ```
 
+Change to the directory of input scripts:
 ```bash
-cd /IMDB
+cd /Application
+```
+
+Import the transformed data into the database:
+```bash
 arangosh --javascript.execute ./import.js
+```
+Or smaller version:
+```bash
+arangosh --javascript.execute ./import_smaller.js
 ```
 
 ```bash

@@ -3,9 +3,7 @@ var fs=require("fs");
   var console = require("console");
   var internal = require("internal");
   var db = internal.db;
- 
-  var vName = "imdb_vertices";
-  var eName = "imdb_edges";
+
   var gName = "imdb";
 
  
@@ -54,9 +52,6 @@ var fs=require("fs");
     g._addVertexCollection(vCollection);
   }
 
-  var rel = gm._relation(eName, vName, vName);
-  g._extendEdgeDefinitions(rel);
-
   var directorsRel = gm._relation(eDirectors, vTitleBasics, vNameBasics);
   g._extendEdgeDefinitions(directorsRel);
 
@@ -82,28 +77,7 @@ var fs=require("fs");
     return d.toLowerCase().replace(" ", "-");
   };
 
-  var storeVertex = function(d) {
-    if (d.releaseDate) {
-      var datF = new Date(d.releaseDate).toISOString().slice(0, 4);
-      datF = Math.floor(datF / 10) * 10;
-      datS = datF + 10;
-      var dat = datF + "-" + datS;
-      d.released = dat;
-    }
-    g[vName].save(d);
-    if (d.genre) {
-      var gK = toKey(d.genre);
-      if (!genres[gK]) {
-        genres[gK] = true;
-        g[vName].save({_key: gK, label: d.genre, type: "Genre"});
-      }
-      g[eName].save({
-        _from: vName + "/" + gK,
-        _to: vName + "/" + d._key,
-        $label: "has_movie"
-      });
-    }
-  };
+
 
 
   var storeTitleBasics = function(d) {
@@ -153,18 +127,7 @@ var fs=require("fs");
   };
 
 
-  var storeEdge = function(d) {
-    d._from = vName + "/" + d._from;
-    d._to = vName + "/" + d._to;
-
-    try {
-      g[eName].save(d);
-    } catch (e) {
-      console.log("Failed:", d._from, "->", d._to);
-    }
-  };
-
-  var verticesCollection = db._collection(vName);
+  // var verticesCollection = db._collection(vName);
   // Leave index creation up to the user, who may prefer an ArangoSearch View
   //verticesCollection.ensureFulltextIndex("description", 3);
   //verticesCollection.ensureFulltextIndex("title", 3);
@@ -172,17 +135,17 @@ var fs=require("fs");
   //verticesCollection.ensureFulltextIndex("birthplace", 3);
 
   // vNameBasics, vTitleAkas, vTitleBasics, vTitleEpisode, vTitleRatings
-  internal.processJsonFile(fs.join(__dirname, "name.basics.jsonl"), storeNameBasics);
-  internal.processJsonFile(fs.join(__dirname, "title.basics.jsonl"), storeTitleBasics);
-  internal.processJsonFile(fs.join(__dirname, "title.akas.jsonl"), storeTitleAkas);
-  internal.processJsonFile(fs.join(__dirname, "title.episode.jsonl"), storeTitleEpisode);
-  internal.processJsonFile(fs.join(__dirname, "title.ratings.jsonl"), storeTitleRatings);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "name.basics.jsonl"), storeNameBasics);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.basics.jsonl"), storeTitleBasics);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.akas.jsonl"), storeTitleAkas);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.episode.jsonl"), storeTitleEpisode);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.ratings.jsonl"), storeTitleRatings);
 
   // eWriters, eDirectors, eTitleAkas, eTitleEpisode, eTitlePrincipals, eTitleRatings
-  internal.processJsonFile(fs.join(__dirname, "writers.jsonl"), storeWritersEdge);
-  internal.processJsonFile(fs.join(__dirname, "directors.jsonl"), storeDirectorsEdge);
-  internal.processJsonFile(fs.join(__dirname, "title.akas_edges.jsonl"), storeTitleAkasEdge);
-  internal.processJsonFile(fs.join(__dirname, "title.episode_edges.jsonl"), storeTitleEpisodeEdge);
-  internal.processJsonFile(fs.join(__dirname, "title.principals_edges.jsonl"), storeTitlePrincipalsEdge);
-  internal.processJsonFile(fs.join(__dirname, "title.ratings_edges.jsonl"), storeTitleRatingsEdge);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "writers.jsonl"), storeWritersEdge);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "directors.jsonl"), storeDirectorsEdge);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.akas_edges.jsonl"), storeTitleAkasEdge);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.episode_edges.jsonl"), storeTitleEpisodeEdge);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.principals_edges.jsonl"), storeTitlePrincipalsEdge);
+  internal.processJsonFile(fs.join(__dirname, "Data", "Transformed", "Smaller", "title.ratings_edges.jsonl"), storeTitleRatingsEdge);
 }());
