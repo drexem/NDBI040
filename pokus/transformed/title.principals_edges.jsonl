@@ -1,0 +1,10 @@
+{"_from": "title.basics/tt0000001", "_to": "name.basics/nm0000001", "ordering": 1, "category": "self", "job": null, "characters": "[\"Self\"]"}
+{"_from": "title.basics/tt0000001", "_to": "name.basics/nm0000002", "ordering": 2, "category": "director", "job": null, "characters": null}
+{"_from": "title.basics/tt0000001", "_to": "name.basics/nm0000003", "ordering": 3, "category": "producer", "job": "producer", "characters": null}
+{"_from": "title.basics/tt0000001", "_to": "name.basics/nm0000004", "ordering": 4, "category": "cinematographer", "job": "director of photography", "characters": null}
+{"_from": "title.basics/tt0000002", "_to": "name.basics/nm0000001", "ordering": 1, "category": "director", "job": null, "characters": null}
+{"_from": "title.basics/tt0000002", "_to": "name.basics/nm0000001", "ordering": 2, "category": "composer", "job": null, "characters": null}
+{"_from": "title.basics/tt0000003", "_to": "name.basics/nm0000004", "ordering": 1, "category": "director", "job": null, "characters": null}
+{"_from": "title.basics/tt0000003", "_to": "name.basics/nm0000005", "ordering": 2, "category": "producer", "job": "producer", "characters": null}
+{"_from": "title.basics/tt0000003", "_to": "name.basics/nm0000006", "ordering": 3, "category": "producer", "job": "producer", "characters": null}
+{"_from": "title.basics/tt0000003", "_to": "name.basics/nm0000007", "ordering": 4, "category": "composer", "job": null, "characters": null}
